@@ -99,8 +99,8 @@ pipeline {
     steps {
         echo '🚀 Deploying application to Kubernetes...'
         bat """
-        powershell -Command "(Get-Content k8s/backend-deployment.yaml) -replace 'your-registry/mern-backend:latest','${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}' | Set-Content k8s/backend-deployment.yaml"
-        powershell -Command "(Get-Content k8s/frontend-deployment.yaml) -replace 'your-registry/mern-frontend:latest','${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}' | Set-Content k8s/frontend-deployment.yaml"
+        powershell -Command "(Get-Content k83/backend-deployment.yaml) -replace 'your-registry/mern-backend:latest','${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}' | Set-Content k8s/backend-deployment.yaml"
+        powershell -Command "(Get-Content k83/frontend-deployment.yaml) -replace 'your-registry/mern-frontend:latest','${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}' | Set-Content k8s/frontend-deployment.yaml"
 
         kubectl apply -f k8s/
         kubectl rollout status deployment/backend-deployment
