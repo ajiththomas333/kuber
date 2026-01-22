@@ -44,7 +44,7 @@ pipeline {
                         script {
                             dir('backend') {
                                 def backendImage = docker.build(
-                                    "${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}"
+                                    "${DOCKER_REGISTRY}/mern-backend:latest"
                                 )
                                 docker.withRegistry(
                                     'https://registry.hub.docker.com',
@@ -63,7 +63,7 @@ pipeline {
                         script {
                             dir('frontend') {
                                 def frontendImage = docker.build(
-                                    "${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}"
+                                    "${DOCKER_REGISTRY}/mern-frontend:latest"
                                 )
                                 docker.withRegistry(
                                     'https://registry.hub.docker.com',
@@ -100,8 +100,8 @@ pipeline {
         script {
             // Update backend and frontend image tags in Windows
             bat """
-            powershell -Command "(Get-Content k83\\\\backend-deployment.yaml) -replace 'ajiththomas10/mern-backend:latest','ajiththomas10/mern-backend:${IMAGE_TAG}' | Set-Content k83\\\\backend-deployment.yaml"
-            powershell -Command "(Get-Content k83\\\\frontend-deployment.yaml) -replace 'ajiththomas10/mern-frontend:latest','ajiththomas10/mern-frontend:${IMAGE_TAG}' | Set-Content k83\\\\frontend-deployment.yaml"
+            powershell -Command "(Get-Content k83\\\\backend-deployment.yaml) -replace 'ajiththomas10/mern-backend:latest','ajiththomas10/mern-backend:latest' | Set-Content k83\\\\backend-deployment.yaml"
+            powershell -Command "(Get-Content k83\\\\frontend-deployment.yaml) -replace 'ajiththomas10/mern-frontend:latest','ajiththomas10/mern-frontend:latest' | Set-Content k83\\\\frontend-deployment.yaml"
             """
 
             // Deploy to Kubernetes
