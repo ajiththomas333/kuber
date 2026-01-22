@@ -95,27 +95,19 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                echo '🚀 Deploying application to Kubernetes...'
+       stage('Deploy to Kubernetes') {
+    steps {
+        echo '🚀 Deploying application to Kubernetes...'
+        bat """
+        powershell -Command "(Get-Content k8s/backend-deployment.yaml) -replace 'your-registry/mern-backend:latest','${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}' | Set-Content k8s/backend-deployment.yaml"
+        powershell -Command "(Get-Content k8s/frontend-deployment.yaml) -replace 'your-registry/mern-frontend:latest','${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}' | Set-Content k8s/frontend-deployment.yaml"
 
-                bat """
-                powershell -Command "(Get-Content k8s/backend-deployment.yaml) `
-                  -replace 'your-registry/mern-backend:latest','${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}' `
-                  | Set-Content k8s/backend-deployment.yaml"
-
-                powershell -Command "(Get-Content k8s/frontend-deployment.yaml) `
-                  -replace 'your-registry/mern-frontend:latest','${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}' `
-                  | Set-Content k8s/frontend-deployment.yaml"
-                """
-
-                bat '''
-                kubectl apply -f k8s/
-                kubectl rollout status deployment/backend-deployment
-                kubectl rollout status deployment/frontend-deployment
-                '''
-            }
-        }
+        kubectl apply -f k8s/
+        kubectl rollout status deployment/backend-deployment
+        kubectl rollout status deployment/frontend-deployment
+        """
+    }
+}
 
         stage('Verify Deployment') {
             steps {
