@@ -95,19 +95,19 @@ pipeline {
             }
         }
 
-       stage('Deploy to Kubernetes') {
-    steps {
-        echo '🚀 Deploying application to Kubernetes...'
-        bat """
-        powershell -Command "(Get-Content k83/backend-deployment.yaml) -replace 'ajiththomas10/mern-backend:latest','${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}' | Set-Content k8s/backend-deployment.yaml"
-        powershell -Command "(Get-Content k83/frontend-deployment.yaml) -replace 'ajiththomas10/mern-frontend:latest','${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}' | Set-Content k8s/frontend-deployment.yaml"
-
-        kubectl apply -f k8s/
-        kubectl rollout status deployment/backend-deployment
-        kubectl rollout status deployment/frontend-deployment
-        """
-    }
-}
+      stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh """
+                        sed -i 's|ajiththomas10/mern-backend:latest|${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}|g' k83/backend-deployment.yaml
+                        sed -i 's|ajiththomas10/mern-frontend:latest|${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}|g' k83/frontend-deployment.yaml
+                    """
+                    sh 'kubectl apply -f k83/'
+                    sh 'kubectl rollout status deployment/backend-deployment'
+                    sh 'kubectl rollout status deployment/frontend-deployment'
+                }
+            }
+        }
 
         stage('Verify Deployment') {
             steps {
