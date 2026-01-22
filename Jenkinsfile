@@ -65,12 +65,14 @@ pipeline {
             }
         }
 
-        stage('Check kubectl availability') {
-            steps {
-                bat 'where kubectl'
-                bat 'kubectl version --client'
-            }
-        }
+       stage('Verify kubeconfig used by Jenkins') {
+    steps {
+        bat '''
+        set "KUBECONFIG=C:\\ProgramData\\Jenkins\\.kube\\config"
+        kubectl config view --minify
+        '''
+    }
+}
 
         stage('Verify Kubernetes Connectivity') {
             steps {
