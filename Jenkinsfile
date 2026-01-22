@@ -106,8 +106,6 @@ pipeline {
 
             // Deploy to Kubernetes
             bat 'kubectl apply -f k83\\\\'
-            bat 'kubectl rollout status deployment/backend-deployment'
-            bat 'kubectl rollout status deployment/frontend-deployment'
         }
     }
 }
