@@ -118,9 +118,8 @@ pipeline {
                 kubectl get pods -o wide
                 kubectl get services
 
-                kubectl wait --for=condition=ready pod -l app=backend --timeout=300s
-                kubectl wait --for=condition=ready pod -l app=frontend --timeout=300s
-                '''
+                
+               
             }
         }
     }
