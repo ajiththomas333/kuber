@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout Source Code') {
             steps {
                 git branch: 'master',
-                    url: 'https://github.com/ajiththomas333/k85.git',
+                    url: 'https://github.com/ajiththomas333/kuber.git',
                     credentialsId: 'git'
             }
         }
