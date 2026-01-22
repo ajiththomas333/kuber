@@ -98,13 +98,13 @@ pipeline {
       stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh """
+                    bat """
                         sed -i 's|ajiththomas10/mern-backend:latest|${DOCKER_REGISTRY}/mern-backend:${IMAGE_TAG}|g' k83/backend-deployment.yaml
                         sed -i 's|ajiththomas10/mern-frontend:latest|${DOCKER_REGISTRY}/mern-frontend:${IMAGE_TAG}|g' k83/frontend-deployment.yaml
                     """
-                    sh 'kubectl apply -f k83/'
-                    sh 'kubectl rollout status deployment/backend-deployment'
-                    sh 'kubectl rollout status deployment/frontend-deployment'
+                    bat 'kubectl apply -f k83/'
+                    bat 'kubectl rollout status deployment/backend-deployment'
+                    bat 'kubectl rollout status deployment/frontend-deployment'
                 }
             }
         }
